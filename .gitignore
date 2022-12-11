@@ -1,0 +1,7 @@
+#Jetbrains
+.idea/
+.fleet/
+
+#Gradle
+.gradle/
+build/
