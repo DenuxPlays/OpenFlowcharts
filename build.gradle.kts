@@ -1,6 +1,7 @@
 plugins {
     java
     application
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.25.0"
 }
@@ -48,8 +49,8 @@ dependencies {
 }
 
 application {
-    mainModule.set("dev.denux.ddrawer")
-    mainClass.set("dev.denux.ddrawer.HelloApplication")
+    mainModule.set("dev.denux")
+    mainClass.set("dev.denux.Run")
 }
 
 jlink {
