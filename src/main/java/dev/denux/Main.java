@@ -9,8 +9,15 @@ import javafx.stage.Stage;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The main class and the starting point of this application.
+ */
 public class Main extends Application {
 
+    /**
+     * Prepares and then starts the application.
+     * @param args The given arguments.
+     */
     public static void main(String[] args) {
         LoggerSetup.configureLogger();
         launch(args);
