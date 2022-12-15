@@ -4,7 +4,7 @@ package dev.denux;
  * Workaround for this
  * <a href="https://github.com/javafxports/openjdk-jfx/issues/236">issue</a>.
  */
-public class Run {
+public class LaunchHelper {
 
     /**
      * Starts the application.
