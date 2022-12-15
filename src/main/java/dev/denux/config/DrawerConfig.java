@@ -1,10 +1,12 @@
 package dev.denux.config;
 
 import dev.denux.util.LoggerSetup;
+import lombok.Getter;
 
 /**
  * Basic config classes.
  */
+@Getter
 public class DrawerConfig {
 
     private boolean debugMode = false;
