@@ -1,12 +1,13 @@
 package dev.denux;
 
 import dev.denux.config.DrawerConfig;
-import dev.denux.shape.MovableRectangle;
+import dev.denux.shape.InteractiveRectangle;
 import dev.denux.util.Constants;
 import dev.denux.util.LoggerSetup;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -36,14 +37,13 @@ public class Main extends Application {
     public void start(@Nonnull Stage primaryStage) {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
 
-        Group group = new Group();
-        Scene scene = new Scene(group);
+        Pane pane = new Pane();
+
+        Rectangle rectangle = new InteractiveRectangle(50, 50);
+        pane.getChildren().add(rectangle);
+
+        Scene scene = new Scene(pane);
         scene.setFill(Constants.GREY);
-
-        MovableRectangle rectangle = new MovableRectangle(50, 50, 40, 25);
-
-        group.getChildren().add(rectangle);
-
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
