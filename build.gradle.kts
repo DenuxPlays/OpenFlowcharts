@@ -52,7 +52,7 @@ dependencies {
 
 application {
     mainModule.set("dev.denux")
-    mainClass.set("dev.denux.Run")
+    mainClass.set("dev.denux.LaunchHelper")
 }
 
 val sourcesForRelease = task<Copy>("sourcesForRelease") {
