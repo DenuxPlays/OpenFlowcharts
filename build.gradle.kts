@@ -5,7 +5,7 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.beryx.jlink") version "2.26.0"
 }
 
 group = "dev.denux"
