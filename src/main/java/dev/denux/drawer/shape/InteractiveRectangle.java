@@ -1,6 +1,6 @@
-package dev.denux.shape;
+package dev.denux.drawer.shape;
 
-import dev.denux.util.Constants;
+import dev.denux.drawer.util.Constants;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;

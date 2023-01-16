@@ -1,12 +1,14 @@
-package dev.denux;
+package dev.denux.drawer;
 
-import dev.denux.config.DrawerConfig;
-import dev.denux.shape.InteractiveRectangle;
-import dev.denux.util.Constants;
-import dev.denux.util.LoggerSetup;
+import dev.denux.drawer.config.DrawerConfig;
+import dev.denux.drawer.shape.InteractiveRectangle;
+import dev.denux.drawer.util.Constants;
+import dev.denux.drawer.util.LoggerSetup;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -37,12 +39,14 @@ public class Main extends Application {
     public void start(@Nonnull Stage primaryStage) {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
 
-        Pane pane = new Pane();
+        BorderPane root = new BorderPane();
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.BASELINE_LEFT);
 
         Rectangle rectangle = new InteractiveRectangle(50, 50);
-        pane.getChildren().add(rectangle);
+        root.getChildren().addAll(rectangle, vBox);
 
-        Scene scene = new Scene(pane);
+        Scene scene = new Scene(root);
         scene.setFill(Constants.GREY);
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);

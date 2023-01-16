@@ -1,4 +1,4 @@
-package dev.denux.util;
+package dev.denux.drawer.util;
 
 import javafx.scene.paint.Color;
 

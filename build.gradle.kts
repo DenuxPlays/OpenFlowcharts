@@ -1,9 +1,11 @@
-import org.apache.tools.ant.filters.ReplaceTokens;
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
+
+    //Java fx
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.26.0"
 }
@@ -51,8 +53,8 @@ dependencies {
 }
 
 application {
-    mainModule.set("dev.denux")
-    mainClass.set("dev.denux.LaunchHelper")
+    mainModule.set("dev.denux.drawer")
+    mainClass.set("dev.denux.drawer.LaunchHelper")
 }
 
 val sourcesForRelease = task<Copy>("sourcesForRelease") {

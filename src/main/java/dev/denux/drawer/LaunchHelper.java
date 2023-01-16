@@ -1,4 +1,4 @@
-package dev.denux;
+package dev.denux.drawer;
 
 /**
  * Workaround for this

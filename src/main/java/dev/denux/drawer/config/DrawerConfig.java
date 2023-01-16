@@ -1,6 +1,6 @@
-package dev.denux.config;
+package dev.denux.drawer.config;
 
-import dev.denux.util.LoggerSetup;
+import dev.denux.drawer.util.LoggerSetup;
 import lombok.Getter;
 
 /**
