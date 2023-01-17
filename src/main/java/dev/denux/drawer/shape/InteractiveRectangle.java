@@ -23,11 +23,11 @@ public class InteractiveRectangle extends Rectangle {
     /**
      * The minimum width of the rectangle.
      */
-    private final double MIN_W = 30;
+    private static final double MIN_W = 30;
     /**
      * The minimum height of the rectangle.
      */
-    private final double MIN_H = 20;
+    private static final double MIN_H = 20;
 
     /**
      * Coordinates of the rectangle, the mouse and the width and height of the rectangle.
@@ -64,8 +64,6 @@ public class InteractiveRectangle extends Rectangle {
      */
     public InteractiveRectangle(double x, double y, double width, double height, @Nonnull Pane pane) {
         super(x, y, width, height);
-        System.out.println("x = " + x);
-        System.out.println("y = " + y);
         this.pane = pane;
         this.setFill(Color.TRANSPARENT);
         this.setStroke(Constants.MUTED_WHITE);
@@ -78,11 +76,11 @@ public class InteractiveRectangle extends Rectangle {
      * Sets all then necessary listeners that makes the rectangle interactive.
      */
     private void setListeners() {
+        this.setOnKeyPressed(this::keyPressed);
         this.setOnMousePressed(this::mousePressed);
         this.setOnMouseDragged(this::mouseDragged);
         this.setOnMouseMoved(this::mouseMoved);
         this.setOnMouseReleased(this::mouseReleased);
-        this.setOnKeyPressed(this::keyPressed);
     }
 
     /**
@@ -186,9 +184,10 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link KeyEvent} instance.
      */
     private void keyPressed(@Nonnull KeyEvent event) {
-        System.out.println("COde" + event.getCode());
         if (event.getCode() == KeyCode.DELETE) {
             pane.getChildren().remove(this);
+            pane.requestFocus();
+            event.consume();
         }
     }
 
@@ -197,6 +196,7 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link MouseEvent} instance.
      */
     private void mousePressed(@Nonnull MouseEvent event) {
+        this.requestFocus();
         if (isInResizeZone(event)) {
             setNewInitialEventCoordinates(event);
             state = currentSate(event);
@@ -206,6 +206,7 @@ public class InteractiveRectangle extends Rectangle {
         } else {
             state = State.DEFAULT;
         }
+        event.consume();
     }
 
     /**
@@ -258,6 +259,7 @@ public class InteractiveRectangle extends Rectangle {
             }
 
             onDragOrResize(newX, newY, newH, newW);
+            event.consume();
         }
     }
 
@@ -269,6 +271,7 @@ public class InteractiveRectangle extends Rectangle {
         State state = currentSate(event);
         Cursor cursor = getCursorForState(state);
         this.setCursor(cursor);
+        event.consume();
     }
 
     /**
@@ -279,6 +282,7 @@ public class InteractiveRectangle extends Rectangle {
     private void mouseReleased(@Nonnull MouseEvent event) {
         this.setCursor(Cursor.DEFAULT);
         state = State.DEFAULT;
+        event.consume();
     }
 
     /**

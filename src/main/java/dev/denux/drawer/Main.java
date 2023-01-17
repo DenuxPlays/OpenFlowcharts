@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -41,26 +40,29 @@ public class Main extends Application {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
 
         final Pane root = new BorderPane();
-        Rectangle rectangle = new InteractiveRectangle(50, 50, root);
+        new InteractiveRectangle(50, 50, root);
         AtomicReference<Double> mouseX = new AtomicReference<>(0.0);
         AtomicReference<Double> mouseY = new AtomicReference<>(0.0);
 
         Scene scene = new Scene(root);
-        scene.setOnKeyPressed(event -> {
+        root.setManaged(false);
+        root.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.INSERT)) {
-                System.out.println("Insert");
-                Rectangle rec = new InteractiveRectangle(mouseX.get() - 25, mouseY.get() - 25, 50, 50, root);
+                new InteractiveRectangle(mouseX.get() - 25, mouseY.get() - 25, 50, 50, root);
             }
+            event.consume();
         });
         //keeps track of the mouse position
-        scene.setOnMouseMoved(event -> {
+        root.setOnMouseMoved(event -> {
             mouseX.set(event.getSceneX());
             mouseY.set(event.getSceneY());
+            event.consume();
         });
 
         scene.setFill(Constants.GREY);
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
+        root.requestFocus();
     }
 }
