@@ -2,7 +2,10 @@ package dev.denux.drawer.shape;
 
 import dev.denux.drawer.util.Constants;
 import javafx.scene.Cursor;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -16,20 +19,26 @@ public class InteractiveRectangle extends Rectangle {
     /**
      * Describes how "big" the area around the edge is that can be used to resize the rectangle.
      */
-    private static final int MARGIN = 5;
+    private final int MARGIN = 5;
     /**
      * The minimum width of the rectangle.
      */
-    private static final double MIN_W = 30;
+    private final double MIN_W = 30;
     /**
      * The minimum height of the rectangle.
      */
-    private static final double MIN_H = 20;
+    private final double MIN_H = 20;
 
     /**
      * Coordinates of the rectangle, the mouse and the width and height of the rectangle.
      */
     private double clickX, clickY, x, y, width, height;
+
+    /**
+     * The {@link Pane} that contains the rectangle.
+     */
+    private final Pane pane;
+
     /**
      * The {@link State} the rectangle currently holds.
      */
@@ -37,15 +46,32 @@ public class InteractiveRectangle extends Rectangle {
 
     /**
      * Create a new interactive rectangle!
-     * @param x The x coordinate.
-     * @param y The y coordinate.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param pane The {@link Pane} that contains the rectangle.
      */
-    public InteractiveRectangle(double x, double y) {
-        super(x, y);
+    public InteractiveRectangle(double width, double height, @Nonnull Pane pane) {
+        this(0, 0, width, height, pane);
+    }
+
+    /**
+     * Create a new interactive rectangle!
+     * @param x The x coordinate of the rectangle.
+     * @param y The y coordinate of the rectangle.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param pane The {@link Pane} that contains the rectangle.
+     */
+    public InteractiveRectangle(double x, double y, double width, double height, @Nonnull Pane pane) {
+        super(x, y, width, height);
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+        this.pane = pane;
         this.setFill(Color.TRANSPARENT);
         this.setStroke(Constants.MUTED_WHITE);
         this.setStrokeWidth(1);
         setListeners();
+        pane.getChildren().add(this);
     }
 
     /**
@@ -56,6 +82,7 @@ public class InteractiveRectangle extends Rectangle {
         this.setOnMouseDragged(this::mouseDragged);
         this.setOnMouseMoved(this::mouseMoved);
         this.setOnMouseReleased(this::mouseReleased);
+        this.setOnKeyPressed(this::keyPressed);
     }
 
     /**
@@ -140,7 +167,7 @@ public class InteractiveRectangle extends Rectangle {
      * @return the current {@link Cursor}.
      */
     @Nonnull
-    private static Cursor getCursorForState(@Nonnull State state) {
+    private Cursor getCursorForState(@Nonnull State state) {
         return switch (state) {
             case NW_RESIZE -> Cursor.NW_RESIZE;
             case SW_RESIZE -> Cursor.SW_RESIZE;
@@ -152,6 +179,17 @@ public class InteractiveRectangle extends Rectangle {
             case S_RESIZE -> Cursor.S_RESIZE;
             default -> Cursor.DEFAULT;
         };
+    }
+
+    /**
+     * A method that deletes the rectangle if the delete key is pressed on the node.
+     * @param event The {@link KeyEvent} instance.
+     */
+    private void keyPressed(@Nonnull KeyEvent event) {
+        System.out.println("COde" + event.getCode());
+        if (event.getCode() == KeyCode.DELETE) {
+            pane.getChildren().remove(this);
+        }
     }
 
     /**
@@ -175,8 +213,8 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link MouseEvent} instance.
      */
     private void mouseDragged(@Nonnull MouseEvent event) {
-        double mouseX = parentX(event.getX());
-        double mouseY = parentY(event.getY());
+        double mouseX = getParentX(event.getX() - this.getX());
+        double mouseY = getParentY(event.getY() - this.getY());
         if (state == State.DRAG) {
             onDragOrResize(mouseX - clickX, mouseY - clickY, height, width);
         } else if (state != State.DEFAULT) {
@@ -252,8 +290,8 @@ public class InteractiveRectangle extends Rectangle {
         y = nodeY();
         height = nodeH();
         width = nodeW();
-        clickX = event.getX();
-        clickY = event.getY();
+        clickX = event.getX() - this.getX();
+        clickY = event.getY() - this.getY();
     }
 
     /**
@@ -272,8 +310,8 @@ public class InteractiveRectangle extends Rectangle {
      * @return true if the mouse is inside it, otherwise false.
      */
     private boolean isInDragZone(@Nonnull MouseEvent event) {
-        double xPos = parentX(event.getX());
-        double yPos = parentY(event.getY());
+        double xPos = getParentX(event.getX() - this.getX());
+        double yPos = getParentY(event.getY() - this.getY());
         double nodeX = nodeX() + MARGIN;
         double nodeY = nodeY() + MARGIN;
         double nodeX0 = nodeX() + nodeW() - MARGIN;
@@ -286,28 +324,28 @@ public class InteractiveRectangle extends Rectangle {
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isLeftResizeZone(@Nonnull MouseEvent event) {
-        return intersect(0, event.getX());
+        return intersect(0, event.getX() - this.getX());
     }
 
     /**
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isRightResizeZone(@Nonnull MouseEvent event) {
-        return intersect(nodeW(), event.getX());
+        return intersect(nodeW(), event.getX() - this.getX());
     }
 
     /**
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isTopResizeZone(@Nonnull MouseEvent event) {
-        return intersect(0, event.getY());
+        return intersect(0, event.getY() - this.getY());
     }
 
     /**
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isBottomResizeZone(@Nonnull MouseEvent event) {
-        return intersect(nodeH(), event.getY());
+        return intersect(nodeH(), event.getY() - this.getY());
     }
 
     /**
@@ -322,7 +360,7 @@ public class InteractiveRectangle extends Rectangle {
      * @return the coordinate.
      */
     private double nodeX() {
-        return this.getBoundsInParent().getMinX();
+        return this.getBoundsInParent().getMinX() - this.getX();
     }
 
     /**
@@ -330,7 +368,7 @@ public class InteractiveRectangle extends Rectangle {
      * @return the coordinate.
      */
     private double nodeY() {
-        return this.getBoundsInParent().getMinY();
+        return this.getBoundsInParent().getMinY() - this.getY();
     }
 
     /**
@@ -353,7 +391,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you parted x-coordinate.
      * @return the coordinate.
      */
-    private double parentX(double localX) {
+    private double getParentX(double localX) {
         return nodeX() + localX;
     }
 
@@ -361,7 +399,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you parted y-coordinate.
      * @return the coordinate.
      */
-    private double parentY(double localY) {
+    private double getParentY(double localY) {
         return nodeY() + localY;
     }
 }
