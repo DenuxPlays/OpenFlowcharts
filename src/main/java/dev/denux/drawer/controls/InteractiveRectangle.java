@@ -1,7 +1,8 @@
-package dev.denux.drawer.shape;
+package dev.denux.drawer.controls;
 
 import dev.denux.drawer.util.Constants;
 import javafx.scene.Cursor;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -102,6 +103,8 @@ public class InteractiveRectangle extends Rectangle {
         this.setOnMousePressed(this::mousePressed);
         this.setOnMouseDragged(this::mouseDragged);
         this.setOnMouseMoved(this::mouseMoved);
+        this.setOnMouseEntered(this::mouseEntered);
+        this.setOnMouseExited(this::mouseExited);
         this.setOnMouseReleased(this::mouseReleased);
     }
 
@@ -211,6 +214,23 @@ public class InteractiveRectangle extends Rectangle {
             pane.requestFocus();
             event.consume();
         }
+    }
+
+    /**
+     * A method that is fired when the mouse has entered the rectangle.
+     * @param event The {@link MouseEvent} instance.
+     */
+    private void mouseEntered(@Nonnull MouseEvent event) {
+        this.setEffect(new Glow(5D));
+    }
+
+    /**
+     * A method that is fired when the mouse has exited the rectangle.
+     * @param event The {@link MouseEvent} instance.
+     */
+    private void mouseExited(@Nonnull MouseEvent event) {
+        System.out.println("Mouse exited");
+        this.setEffect(null);
     }
 
     /**

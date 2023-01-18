@@ -1,6 +1,6 @@
 package dev.denux.drawer.pane;
 
-import dev.denux.drawer.shape.InteractiveRectangle;
+import dev.denux.drawer.controls.InteractiveRectangle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;

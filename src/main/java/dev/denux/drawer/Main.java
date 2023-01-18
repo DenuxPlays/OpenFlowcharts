@@ -1,8 +1,8 @@
 package dev.denux.drawer;
 
 import dev.denux.drawer.config.DrawerConfig;
+import dev.denux.drawer.controls.InteractiveRectangle;
 import dev.denux.drawer.pane.DrawerPane;
-import dev.denux.drawer.shape.InteractiveRectangle;
 import dev.denux.drawer.util.Constants;
 import dev.denux.drawer.util.LoggerSetup;
 import javafx.application.Application;
