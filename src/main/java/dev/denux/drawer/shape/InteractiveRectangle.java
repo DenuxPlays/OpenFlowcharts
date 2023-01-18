@@ -50,7 +50,7 @@ public class InteractiveRectangle extends Rectangle {
      * @param height The height of the rectangle.
      * @param pane The {@link Pane} that contains the rectangle.
      */
-    public InteractiveRectangle(double width, double height, @Nonnull Pane pane) {
+    private InteractiveRectangle(double width, double height, @Nonnull Pane pane) {
         this(0, 0, width, height, pane);
     }
 
@@ -62,7 +62,7 @@ public class InteractiveRectangle extends Rectangle {
      * @param height The height of the rectangle.
      * @param pane The {@link Pane} that contains the rectangle.
      */
-    public InteractiveRectangle(double x, double y, double width, double height, @Nonnull Pane pane) {
+    private InteractiveRectangle(double x, double y, double width, double height, @Nonnull Pane pane) {
         super(x, y, width, height);
         this.pane = pane;
         this.setFill(Color.TRANSPARENT);
@@ -70,6 +70,28 @@ public class InteractiveRectangle extends Rectangle {
         this.setStrokeWidth(1);
         setListeners();
         pane.getChildren().add(this);
+    }
+
+    /**
+     * Create a new interactive rectangle and adds it to the given {@link Pane}.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param pane The {@link Pane} that contains the rectangle.
+     */
+    public static void create(double width, double height, @Nonnull Pane pane) {
+        new InteractiveRectangle(width, height, pane);
+    }
+
+    /**
+     * Create a new interactive rectangle and adds it to the given {@link Pane}.
+     * @param x The x coordinate of the rectangle.
+     * @param y The y coordinate of the rectangle.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param pane The {@link Pane} that contains the rectangle.
+     */
+    public static void create(double x, double y, double width, double height, @Nonnull Pane pane) {
+        new InteractiveRectangle(x, y, width, height, pane);
     }
 
     /**
@@ -275,7 +297,7 @@ public class InteractiveRectangle extends Rectangle {
     }
 
     /**
-     * A function that is being executed when the mouse is being released and an other {@link MouseEvent} was fired
+     * A function that is being executed when the mouse is being released and another {@link MouseEvent} was fired
      * before.
      * @param event The {@link MouseEvent} instance.
      */
@@ -290,10 +312,10 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link MouseEvent} instance.
      */
     private void setNewInitialEventCoordinates(@Nonnull MouseEvent event) {
-        x = nodeX();
-        y = nodeY();
-        height = nodeH();
-        width = nodeW();
+        x = getNodeX();
+        y = getNodeY();
+        height = getNodeH();
+        width = getNodeW();
         clickX = event.getX() - this.getX();
         clickY = event.getY() - this.getY();
     }
@@ -316,10 +338,10 @@ public class InteractiveRectangle extends Rectangle {
     private boolean isInDragZone(@Nonnull MouseEvent event) {
         double xPos = getParentX(event.getX() - this.getX());
         double yPos = getParentY(event.getY() - this.getY());
-        double nodeX = nodeX() + MARGIN;
-        double nodeY = nodeY() + MARGIN;
-        double nodeX0 = nodeX() + nodeW() - MARGIN;
-        double nodeY0 = nodeY() + nodeH() - MARGIN;
+        double nodeX = getNodeX() + MARGIN;
+        double nodeY = getNodeY() + MARGIN;
+        double nodeX0 = getNodeX() + getNodeW() - MARGIN;
+        double nodeY0 = getNodeY() + getNodeH() - MARGIN;
 
         return (xPos > nodeX && xPos < nodeX0) && (yPos > nodeY && yPos < nodeY0);
     }
@@ -335,7 +357,7 @@ public class InteractiveRectangle extends Rectangle {
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isRightResizeZone(@Nonnull MouseEvent event) {
-        return intersect(nodeW(), event.getX() - this.getX());
+        return intersect(getNodeW(), event.getX() - this.getX());
     }
 
     /**
@@ -349,7 +371,7 @@ public class InteractiveRectangle extends Rectangle {
      * @see InteractiveRectangle#isInResizeZone(MouseEvent)
      */
     private boolean isBottomResizeZone(@Nonnull MouseEvent event) {
-        return intersect(nodeH(), event.getY() - this.getY());
+        return intersect(getNodeH(), event.getY() - this.getY());
     }
 
     /**
@@ -363,7 +385,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you the current x-coordinate inside the parents-bound.
      * @return the coordinate.
      */
-    private double nodeX() {
+    private double getNodeX() {
         return this.getBoundsInParent().getMinX() - this.getX();
     }
 
@@ -371,7 +393,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you the current y-coordinate inside the parents-bound.
      * @return the coordinate.
      */
-    private double nodeY() {
+    private double getNodeY() {
         return this.getBoundsInParent().getMinY() - this.getY();
     }
 
@@ -379,7 +401,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you the current width inside the parents-bound.
      * @return the width.
      */
-    private double nodeW() {
+    private double getNodeW() {
         return this.getBoundsInParent().getWidth();
     }
 
@@ -387,7 +409,7 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you the current height inside the parents-bound.
      * @return the height.
      */
-    private double nodeH() {
+    private double getNodeH() {
         return this.getBoundsInParent().getHeight();
     }
 
@@ -396,7 +418,7 @@ public class InteractiveRectangle extends Rectangle {
      * @return the coordinate.
      */
     private double getParentX(double localX) {
-        return nodeX() + localX;
+        return getNodeX() + localX;
     }
 
     /**
@@ -404,6 +426,6 @@ public class InteractiveRectangle extends Rectangle {
      * @return the coordinate.
      */
     private double getParentY(double localY) {
-        return nodeY() + localY;
+        return getNodeY() + localY;
     }
 }
