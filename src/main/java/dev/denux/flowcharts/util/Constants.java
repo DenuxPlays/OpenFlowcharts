@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class Constants {
     private Constants() {}
 
-    public static String APPLICATION_NAME = "D-Drawer";
+    public static String APPLICATION_NAME = "OpenFlowcharts";
     public static String VERSION = "@version@";
 
     public static Color GREY = Color.web("#333333");
