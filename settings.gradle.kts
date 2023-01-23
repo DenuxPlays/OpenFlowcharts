@@ -1,1 +1,1 @@
-rootProject.name = "D-Drawer"
+rootProject.name = "OpenFlowchart"

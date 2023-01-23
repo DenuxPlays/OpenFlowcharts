@@ -1,4 +1,4 @@
-package dev.denux.drawer.util;
+package dev.denux.flowchart.util;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;

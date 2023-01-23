@@ -1,6 +1,6 @@
-package dev.denux.drawer.controls;
+package dev.denux.flowchart.controls;
 
-import dev.denux.drawer.util.Constants;
+import dev.denux.flowchart.util.Constants;
 import javafx.scene.Cursor;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;

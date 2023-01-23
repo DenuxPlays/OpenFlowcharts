@@ -1,4 +1,4 @@
-package dev.denux.drawer;
+package dev.denux.flowchart;
 
 /**
  * Workaround for this

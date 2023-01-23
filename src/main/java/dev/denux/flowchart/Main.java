@@ -1,10 +1,10 @@
-package dev.denux.drawer;
+package dev.denux.flowchart;
 
-import dev.denux.drawer.config.DrawerConfig;
-import dev.denux.drawer.controls.InteractiveRectangle;
-import dev.denux.drawer.pane.DrawerPane;
-import dev.denux.drawer.util.Constants;
-import dev.denux.drawer.util.LoggerSetup;
+import dev.denux.flowchart.config.DrawerConfig;
+import dev.denux.flowchart.controls.InteractiveRectangle;
+import dev.denux.flowchart.pane.DrawerPane;
+import dev.denux.flowchart.util.Constants;
+import dev.denux.flowchart.util.LoggerSetup;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

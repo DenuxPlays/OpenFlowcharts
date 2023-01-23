@@ -1,6 +1,6 @@
-package dev.denux.drawer.config;
+package dev.denux.flowchart.config;
 
-import dev.denux.drawer.util.LoggerSetup;
+import dev.denux.flowchart.util.LoggerSetup;
 import lombok.Getter;
 
 /**
