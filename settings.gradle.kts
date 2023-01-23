@@ -1,1 +1,1 @@
-rootProject.name = "OpenFlowchart"
+rootProject.name = "OpenFlowcharts"

@@ -1,6 +1,6 @@
-package dev.denux.flowchart.pane;
+package dev.denux.flowcharts.pane;
 
-import dev.denux.flowchart.controls.InteractiveRectangle;
+import dev.denux.flowcharts.controls.InteractiveRectangle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;

@@ -1,4 +1,4 @@
-package dev.denux.flowchart.util;
+package dev.denux.flowcharts.util;
 
 import javafx.scene.paint.Color;
 
