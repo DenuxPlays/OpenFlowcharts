@@ -1,6 +1,6 @@
-# OpenFlowchart
+# OpenFlowcharts
 
-An App that aims to make the creation of flow-charts and database diagrams easier.
+An App that aims to make the creation of flow-charts easier and free for everyone.
 
 ## Requirements
 * Java 19
