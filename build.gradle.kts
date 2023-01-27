@@ -53,8 +53,8 @@ dependencies {
 }
 
 application {
-    mainModule.set("dev.denux.drawer")
-    mainClass.set("dev.denux.drawer.LaunchHelper")
+    mainModule.set("dev.denux.flowcharts")
+    mainClass.set("dev.denux.flowcharts.LaunchHelper")
 }
 
 jlink {
