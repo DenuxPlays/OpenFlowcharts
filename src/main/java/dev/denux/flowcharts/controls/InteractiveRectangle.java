@@ -229,7 +229,6 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link MouseEvent} instance.
      */
     private void mouseExited(@Nonnull MouseEvent event) {
-        System.out.println("Mouse exited");
         this.setEffect(null);
     }
 

@@ -7,6 +7,7 @@ import dev.denux.flowcharts.util.Constants;
 import dev.denux.flowcharts.util.LoggerSetup;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -37,8 +38,9 @@ public class Main extends Application {
     public void start(@Nonnull Stage primaryStage) {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
 
-        final Pane root = new DrawerPane();
-        InteractiveRectangle.create(50, 50, root);
+        Pane drawerPane = new DrawerPane();
+        BorderPane root = new BorderPane(drawerPane);
+        InteractiveRectangle.create(50, 50, drawerPane);
         Scene scene = new Scene(root);
 
         scene.setFill(Constants.GREY);
