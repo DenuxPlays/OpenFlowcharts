@@ -27,7 +27,7 @@ repositories {
     mavenCentral()
 }
 
-val lombokVersion = "1.18.24"
+val lombokVersion = "1.18.26"
 
 dependencies {
     implementation("org.controlsfx:controlsfx:11.1.2")
