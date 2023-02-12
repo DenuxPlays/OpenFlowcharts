@@ -30,11 +30,6 @@ repositories {
 val lombokVersion = "1.18.26"
 
 dependencies {
-    implementation("org.controlsfx:controlsfx:11.1.2")
-    implementation("net.synedra:validatorfx:0.4.0") {
-        exclude(group = "org.openjfx")
-    }
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
