@@ -39,14 +39,13 @@ public class Main extends Application {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
 
         Pane drawerPane = new DrawerPane();
-        BorderPane root = new BorderPane(drawerPane);
         InteractiveRectangle.create(50, 50, drawerPane);
-        Scene scene = new Scene(root);
 
+        Scene scene = new Scene(drawerPane);
         scene.setFill(Constants.GREY);
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
-        root.requestFocus();
+        drawerPane.requestFocus();
     }
 }
