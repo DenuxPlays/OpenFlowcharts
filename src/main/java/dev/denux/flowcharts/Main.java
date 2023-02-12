@@ -7,7 +7,6 @@ import dev.denux.flowcharts.util.Constants;
 import dev.denux.flowcharts.util.LoggerSetup;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;

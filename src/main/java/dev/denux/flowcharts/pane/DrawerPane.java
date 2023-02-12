@@ -5,14 +5,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nonnull;
 
 /**
  * The main pane of the application.
  */
-@Slf4j
 public class DrawerPane extends Pane {
 
 	/**
@@ -61,7 +59,6 @@ public class DrawerPane extends Pane {
 	private void onMouseMoved(@Nonnull MouseEvent event) {
 		mouseX = event.getSceneX();
 		mouseY = event.getSceneY();
-		log.debug("Mouse moved to ({}, {})", mouseX, mouseY);
 		event.consume();
 	}
 }

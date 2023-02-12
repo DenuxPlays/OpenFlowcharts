@@ -222,6 +222,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void mouseEntered(@Nonnull MouseEvent event) {
         this.setEffect(new Glow(5D));
+        event.consume();
     }
 
     /**
@@ -230,6 +231,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void mouseExited(@Nonnull MouseEvent event) {
         this.setEffect(null);
+        event.consume();
     }
 
     /**
