@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     java
     application
-    id("com.github.johnrengelman.shadow") version "8.0.0"
+    id("com.github.johnrengelman.shadow") version "8.1.0"
 
     //Java fx
     id("org.openjfx.javafxplugin") version "0.0.13"
