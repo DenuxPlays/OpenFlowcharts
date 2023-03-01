@@ -1,14 +1,12 @@
 package dev.denux.flowcharts;
 
 import dev.denux.flowcharts.config.DrawerConfig;
-import dev.denux.flowcharts.controls.GlowingCircle;
 import dev.denux.flowcharts.controls.InteractiveRectangle;
 import dev.denux.flowcharts.pane.DrawerPane;
 import dev.denux.flowcharts.util.Constants;
 import dev.denux.flowcharts.util.LoggerSetup;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
