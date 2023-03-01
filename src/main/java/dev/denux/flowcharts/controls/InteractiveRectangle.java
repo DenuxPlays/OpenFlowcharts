@@ -1,15 +1,19 @@
 package dev.denux.flowcharts.controls;
 
 import dev.denux.flowcharts.util.Constants;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
 /**
@@ -46,6 +50,16 @@ public class InteractiveRectangle extends Rectangle {
     private State state = State.DEFAULT;
 
     /**
+     * The {@link Group} that contains all the elements of the rectangle.
+     */
+    private final Group group = new Group();
+
+    /**
+     * The {@link GlowingCircle}s that are used to draw an arrow from the rectangle.
+     */
+    private GlowingCircle circleN, circleE, circleS, circleW;
+
+    /**
      * Create a new interactive rectangle!
      * @param width The width of the rectangle.
      * @param height The height of the rectangle.
@@ -70,8 +84,65 @@ public class InteractiveRectangle extends Rectangle {
         this.setStroke(Constants.MUTED_WHITE);
         this.setStrokeWidth(1);
         setListeners();
-        pane.getChildren().add(this);
+        createCircles();
+        showOrHideCircles(false);
+        pane.getChildren().addAll(this, group);
     }
+
+    /**
+     * Creates the circles that are anker points to an arrow.
+     */
+    private void createCircles() {
+        circleN = addCircles(getCenterN());
+        circleE = addCircles(getCenterE());
+        circleS = addCircles(getCenterS());
+        circleW = addCircles(getCenterW());
+    }
+
+    /**
+     * Updates all circles coordinates.
+     */
+    private void updateAllCircles() {
+        updateCircle(circleN, getCenterN());
+        updateCircle(circleE, getCenterE());
+        updateCircle(circleS, getCenterS());
+        updateCircle(circleW, getCenterW());
+    }
+
+    /**
+     * Updates the coordinates of the given circle.
+     * @param circle The {@link Circle} to update.
+     * @param point The {@link Point2D} that contains the new coordinates.
+     */
+    private void updateCircle(@Nonnull Circle circle, @Nonnull Point2D point) {
+        circle.setCenterX(point.getX());
+        circle.setCenterY(point.getY());
+    }
+
+    /**
+     * Updates the visibility of the circles.
+     * @param show True if the circles should be visible, false otherwise.
+     */
+    private void showOrHideCircles(boolean show) {
+        circleN.setVisible(show);
+        circleE.setVisible(show);
+        circleS.setVisible(show);
+        circleW.setVisible(show);
+    }
+
+    /**
+     * Adds a {@link GlowingCircle} to the {@link Group} and returns it.
+     * @param point The {@link Point2D} that contains the coordinates of the circle.
+     * @return The {@link GlowingCircle} that was added.
+     */
+    @CheckReturnValue
+    @Nonnull
+    private GlowingCircle addCircles(@Nonnull Point2D point) {
+        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 3);
+        group.getChildren().add(circle);
+        return circle;
+    }
+
 
     /**
      * Create a new interactive rectangle and adds it to the given {@link Pane}.
@@ -117,6 +188,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void onDragOrResize(double x, double y, double height, double width) {
         setNodeSize(x, y, height, width);
+        updateAllCircles();
     }
 
     /**
@@ -222,6 +294,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void mouseEntered(@Nonnull MouseEvent event) {
         this.setEffect(new Glow(5D));
+        showOrHideCircles(true);
         event.consume();
     }
 
@@ -231,6 +304,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void mouseExited(@Nonnull MouseEvent event) {
         this.setEffect(null);
+        showOrHideCircles(false);
         event.consume();
     }
 
@@ -432,6 +506,38 @@ public class InteractiveRectangle extends Rectangle {
      */
     private double getNodeH() {
         return this.getBoundsInParent().getHeight();
+    }
+
+    /**
+     * Gets you the center of the north side.
+     * @return A {@link Point2D} that contains the x and y coordinate.
+     */
+    private Point2D getCenterN() {
+        return new Point2D(getNodeX() + getNodeW() / 2, getNodeY());
+    }
+
+    /**
+     * Gets you the center of the east side.
+     * @return A {@link Point2D} that contains the x and y coordinate.
+     */
+    private Point2D getCenterE() {
+        return new Point2D(getNodeX() + getNodeW(), getNodeY() + getNodeH() / 2);
+    }
+
+    /**
+     * Gets you the center of the west side.
+     * @return A {@link Point2D} that contains the x and y coordinate.
+     */
+    private Point2D getCenterS() {
+        return new Point2D(getNodeX() + getNodeW() / 2, getNodeY() + getNodeH());
+    }
+
+    /**
+     * Gets you the center of the west side.
+     * @return A {@link Point2D} that contains the x and y coordinate.
+     */
+    private Point2D getCenterW() {
+        return new Point2D(getNodeX(), getNodeY() + getNodeH() / 2);
     }
 
     /**
