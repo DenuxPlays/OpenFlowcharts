@@ -9,7 +9,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -80,13 +79,16 @@ public class InteractiveRectangle extends Rectangle {
     private InteractiveRectangle(double x, double y, double width, double height, @Nonnull Pane pane) {
         super(x, y, width, height);
         this.pane = pane;
-        this.setFill(Color.TRANSPARENT);
+        this.setFill(Constants.GREY);
         this.setStroke(Constants.MUTED_WHITE);
         this.setStrokeWidth(1);
+        this.setVisible(false);
+        pane.getChildren().add(this);
         setListeners();
         createCircles();
         showOrHideCircles(false);
-        pane.getChildren().addAll(this, group);
+        pane.getChildren().add(group);
+        this.setVisible(true);
     }
 
     /**
@@ -138,7 +140,7 @@ public class InteractiveRectangle extends Rectangle {
     @CheckReturnValue
     @Nonnull
     private GlowingCircle addCircles(@Nonnull Point2D point) {
-        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 3);
+        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 5, group);
         group.getChildren().add(circle);
         return circle;
     }
@@ -164,6 +166,14 @@ public class InteractiveRectangle extends Rectangle {
      */
     public static void create(double x, double y, double width, double height, @Nonnull Pane pane) {
         new InteractiveRectangle(x, y, width, height, pane);
+    }
+
+    /**
+     * Deletes the rectangle and all the elements that are connected to it.
+     */
+    public void delete() {
+        pane.getChildren().removeAll(this, group);
+        pane.requestFocus();
     }
 
     /**
@@ -282,10 +292,9 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void keyPressed(@Nonnull KeyEvent event) {
         if (event.getCode() == KeyCode.DELETE) {
-            pane.getChildren().remove(this);
-            pane.requestFocus();
-            event.consume();
+            delete();
         }
+        event.consume();
     }
 
     /**
@@ -512,32 +521,36 @@ public class InteractiveRectangle extends Rectangle {
      * Gets you the center of the north side.
      * @return A {@link Point2D} that contains the x and y coordinate.
      */
+    @Nonnull
     private Point2D getCenterN() {
-        return new Point2D(getNodeX() + getNodeW() / 2, getNodeY());
+        return new Point2D(getParentX(getX()) + getNodeW() / 2, getParentY(getY()));
     }
 
     /**
      * Gets you the center of the east side.
      * @return A {@link Point2D} that contains the x and y coordinate.
      */
+    @Nonnull
     private Point2D getCenterE() {
-        return new Point2D(getNodeX() + getNodeW(), getNodeY() + getNodeH() / 2);
+        return new Point2D(getParentX(getX()) + getNodeW(), getParentY(getY()) + getNodeH() / 2);
     }
 
     /**
      * Gets you the center of the west side.
      * @return A {@link Point2D} that contains the x and y coordinate.
      */
+    @Nonnull
     private Point2D getCenterS() {
-        return new Point2D(getNodeX() + getNodeW() / 2, getNodeY() + getNodeH());
+        return new Point2D(getParentX(getX())+ getNodeW() / 2, getParentY(getY()) + getNodeH());
     }
 
     /**
      * Gets you the center of the west side.
      * @return A {@link Point2D} that contains the x and y coordinate.
      */
+    @Nonnull
     private Point2D getCenterW() {
-        return new Point2D(getNodeX(), getNodeY() + getNodeH() / 2);
+        return new Point2D(getParentX(getX()), getParentY(getY()) + getNodeH() / 2);
     }
 
     /**

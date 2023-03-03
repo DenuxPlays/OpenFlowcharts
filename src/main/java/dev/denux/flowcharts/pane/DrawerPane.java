@@ -37,6 +37,7 @@ public class DrawerPane extends Pane {
 	private void setListeners() {
 		this.setOnKeyPressed(this::onKeyPressed);
 		this.setOnMouseMoved(this::onMouseMoved);
+		this.setOnMousePressed(this::onMousePressed);
 	}
 
 	/**
@@ -59,6 +60,15 @@ public class DrawerPane extends Pane {
 	private void onMouseMoved(@Nonnull MouseEvent event) {
 		mouseX = event.getSceneX();
 		mouseY = event.getSceneY();
+		event.consume();
+	}
+
+	/**
+	 * Used to the focus back to the pane when the mouse is pressed.
+	 * @param event The {@link MouseEvent}.
+	 */
+	private void onMousePressed(@Nonnull MouseEvent event) {
+		requestFocus();
 		event.consume();
 	}
 }
