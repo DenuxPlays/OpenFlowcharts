@@ -120,9 +120,7 @@ public class InteractiveRectangle extends Rectangle {
     @CheckReturnValue
     @Nonnull
     private GlowingCircle addCircles(@Nonnull Point2D point) {
-        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 5, pane);
-        group.getChildren().add(circle);
-        return circle;
+        return new GlowingCircle(point.getX(), point.getY(), 5, group);
     }
 
     /**

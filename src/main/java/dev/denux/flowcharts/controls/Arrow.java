@@ -1,6 +1,7 @@
 package dev.denux.flowcharts.controls;
 
 import dev.denux.flowcharts.util.Constants;
+import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -8,18 +9,19 @@ import javafx.scene.shape.Line;
 
 import javax.annotation.Nonnull;
 
+//TODO java docs
 public class Arrow extends Line {
 
 	private Runnable deleteCallback = () -> {};
 
-	private final Pane pane;
+	private final Group group;
 
 	private final Line arrow1 = new Line();
 	private final Line arrow2 = new Line();
 
-	public Arrow(double startX, double startY, double endX, double endY, Pane pane) {
+	public Arrow(double startX, double startY, double endX, double endY, Group group) {
 		super(startX, startY, endX, endY);
-		this.pane = pane;
+		this.group = group;
 		this.setStroke(Constants.MUTED_WHITE);
 		arrow1.setStroke(Constants.MUTED_WHITE);
 		arrow2.setStroke(Constants.MUTED_WHITE);
@@ -70,11 +72,11 @@ public class Arrow extends Line {
 	}
 
 	protected void addArrowHead() {
-		pane.getChildren().addAll(arrow1, arrow2);
+		group.getChildren().addAll(arrow1, arrow2);
 	}
 
 	public void delete() {
 		deleteCallback.run();
-		pane.getChildren().removeAll(this, arrow1, arrow2);
+		group.getChildren().removeAll(this, arrow1, arrow2);
 	}
 }
