@@ -73,7 +73,7 @@ public class InteractiveRectangle extends Rectangle {
         this.setStrokeWidth(1);
         this.setVisible(false);
         pane.getChildren().add(this);
-        setListeners();
+        setEventListeners();
         createCircles();
         showOrHideCircles(false);
         pane.getChildren().add(group);
@@ -148,7 +148,7 @@ public class InteractiveRectangle extends Rectangle {
     /**
      * Sets all then necessary listeners that makes the rectangle interactive.
      */
-    private void setListeners() {
+    private void setEventListeners() {
         this.setOnKeyPressed(this::keyPressed);
         this.setOnMousePressed(this::mousePressed);
         this.setOnMouseDragged(this::mouseDragged);
@@ -260,7 +260,7 @@ public class InteractiveRectangle extends Rectangle {
      * @param event The {@link KeyEvent} instance.
      */
     private void keyPressed(@Nonnull KeyEvent event) {
-        if (event.getCode() == KeyCode.DELETE) {
+        if (event.getCode().equals(KeyCode.DELETE)) {
             delete();
         }
         event.consume();

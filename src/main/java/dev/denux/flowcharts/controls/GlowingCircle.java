@@ -2,7 +2,6 @@ package dev.denux.flowcharts.controls;
 
 import dev.denux.flowcharts.util.Constants;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -18,7 +17,7 @@ public class GlowingCircle extends Circle {
 
 	private final Pane pane;
 
-	private Arrow arrow = null;
+	protected Arrow arrow = null;
 
 	public GlowingCircle(double centerX, double centerY, double radius, @Nonnull Pane pane) {
 		super(centerX, centerY, radius);
@@ -26,8 +25,14 @@ public class GlowingCircle extends Circle {
 		this.setFill(Constants.GREY);
 		this.setStroke(Color.GREENYELLOW);
 		this.pane = pane;
-		addEventHandlers();
+		setEventListeners();
 		toFront();
+	}
+
+	private void setEventListeners() {
+		this.setOnMouseDragged(this::onMouseDragged);
+		this.setOnMouseEntered(this::onMouseEntered);
+		this.setOnMouseExited(this::onMouseExited);
 	}
 
 	/**
@@ -46,13 +51,8 @@ public class GlowingCircle extends Circle {
 		if (arrow == null) return;
 		arrow.setStartX(point.getX());
 		arrow.setStartY(point.getY());
+		arrow.updateArrowHead();
 		arrow.toBack();
-	}
-
-	private void addEventHandlers() {
-		this.setOnMouseDragged(this::onMouseDragged);
-		this.setOnMouseEntered(this::onMouseEntered);
-		this.setOnMouseExited(this::onMouseExited);
 	}
 
 	private void onMouseEntered(@Nonnull MouseEvent event) {
@@ -70,15 +70,17 @@ public class GlowingCircle extends Circle {
 	private void onMouseDragged(@Nonnull MouseEvent event) {
 		if (event.isPrimaryButtonDown()) {
 			if (arrow == null) {
-				arrow = new Arrow(this.getCenterX(), this.getCenterY(), event.getX(), event.getY());;
-				pane.getChildren().add(arrow);
+				arrow = new Arrow(this.getCenterX(), this.getCenterY(), event.getX(), event.getY(), pane);
+				arrow.setDeleteCallback(() -> arrow = null);
+				arrow.addArrowHead();
+				pane.getChildren().addAll(arrow);
 			} else {
 				arrow.setEndX(event.getX());
 				arrow.setEndY(event.getY());
 			}
 		}
+		arrow.updateArrowHead();
 		arrow.toBack();
-		toFront();
 		event.consume();
 	}
 }
