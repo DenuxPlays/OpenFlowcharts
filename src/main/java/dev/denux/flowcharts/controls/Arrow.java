@@ -4,7 +4,6 @@ import dev.denux.flowcharts.util.Constants;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 import javax.annotation.Nonnull;
@@ -27,6 +26,7 @@ public class Arrow extends Line {
 		arrow2.setStroke(Constants.MUTED_WHITE);
 		updateArrowHead();
 		setEventHandlers();
+		toBack();
 	}
 
 	public void setDeleteCallback(@Nonnull Runnable deleteCallback) {

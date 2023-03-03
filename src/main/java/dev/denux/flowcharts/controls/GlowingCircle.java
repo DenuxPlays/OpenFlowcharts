@@ -26,8 +26,8 @@ public class GlowingCircle extends Circle {
 		this.setStroke(Color.GREENYELLOW);
 		this.group = group;
 		setEventListeners();
-		toFront();
 		group.getChildren().add(this);
+		toFront();
 	}
 
 	private void setEventListeners() {
@@ -47,12 +47,6 @@ public class GlowingCircle extends Circle {
 		toFront();
 	}
 
-	public void delete() {
-		if (arrow != null) {
-			arrow.delete();
-		}
-	}
-
 
 	public void updateArrowStart(@Nonnull Point2D point) {
 		if (arrow == null) return;
@@ -65,12 +59,14 @@ public class GlowingCircle extends Circle {
 	private void onMouseEntered(@Nonnull MouseEvent event) {
 		this.requestFocus();
 		this.setVisible(true);
+		toFront();
 		event.consume();
 	}
 
 	private void onMouseExited(@Nonnull MouseEvent event) {
 		this.setFocused(false);
 		this.setVisible(false);
+		toFront();
 		event.consume();
 	}
 
@@ -88,6 +84,7 @@ public class GlowingCircle extends Circle {
 		}
 		arrow.updateArrowHead();
 		arrow.toBack();
+		toFront();
 		event.consume();
 	}
 }

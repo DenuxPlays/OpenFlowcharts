@@ -2,14 +2,20 @@ package dev.denux.flowcharts.controls;
 
 import dev.denux.flowcharts.util.Constants;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -52,6 +58,8 @@ public class InteractiveRectangle extends Rectangle {
      */
     private final Group group = new Group();
 
+    private final CustomTextField textField;
+
     /**
      * The {@link GlowingCircle}s that are used to draw an arrow from the rectangle.
      */
@@ -73,12 +81,48 @@ public class InteractiveRectangle extends Rectangle {
         this.setStrokeWidth(1);
         this.setVisible(false);
         pane.getChildren().add(this);
-        setEventListeners();
         createCircles();
         showOrHideCircles(false);
         pane.getChildren().add(group);
         this.setVisible(true);
+        textField = new CustomTextField();
+        textField.resizeRelocate(getParentX(getX()) + 5, getParentY(getY()) + 5, getWidth() - 5, getHeight() - 5);
+        textField.toFront();
+        setEventListeners();
         requestFocus();
+    }
+
+    /**
+     * Create a new interactive rectangle and adds it to the given {@link Pane}.
+     * @param x The x coordinate of the rectangle.
+     * @param y The y coordinate of the rectangle.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param pane The {@link Pane} that contains the rectangle.
+     */
+    public static void create(double x, double y, double width, double height, @Nonnull Pane pane) {
+        new InteractiveRectangle(x, y, width, height, pane);
+    }
+
+    /**
+     * Deletes the rectangle and all the elements that are connected to it.
+     */
+    public void delete() {
+        pane.getChildren().removeAll(this, group);
+        pane.requestFocus();
+    }
+
+    /**
+     * Sets all then necessary listeners that makes the rectangle interactive.
+     */
+    private void setEventListeners() {
+        this.setOnKeyPressed(this::keyPressed);
+        this.setOnMousePressed(this::mousePressed);
+        this.setOnMouseDragged(this::mouseDragged);
+        this.setOnMouseMoved(this::mouseMoved);
+        this.setOnMouseEntered(this::mouseEntered);
+        this.setOnMouseExited(this::mouseExited);
+        this.setOnMouseReleased(this::mouseReleased);
     }
 
     /**
@@ -124,39 +168,6 @@ public class InteractiveRectangle extends Rectangle {
     }
 
     /**
-     * Create a new interactive rectangle and adds it to the given {@link Pane}.
-     * @param x The x coordinate of the rectangle.
-     * @param y The y coordinate of the rectangle.
-     * @param width The width of the rectangle.
-     * @param height The height of the rectangle.
-     * @param pane The {@link Pane} that contains the rectangle.
-     */
-    public static void create(double x, double y, double width, double height, @Nonnull Pane pane) {
-        new InteractiveRectangle(x, y, width, height, pane);
-    }
-
-    /**
-     * Deletes the rectangle and all the elements that are connected to it.
-     */
-    public void delete() {
-        pane.getChildren().removeAll(this, group);
-        pane.requestFocus();
-    }
-
-    /**
-     * Sets all then necessary listeners that makes the rectangle interactive.
-     */
-    private void setEventListeners() {
-        this.setOnKeyPressed(this::keyPressed);
-        this.setOnMousePressed(this::mousePressed);
-        this.setOnMouseDragged(this::mouseDragged);
-        this.setOnMouseMoved(this::mouseMoved);
-        this.setOnMouseEntered(this::mouseEntered);
-        this.setOnMouseExited(this::mouseExited);
-        this.setOnMouseReleased(this::mouseReleased);
-    }
-
-    /**
      * A method that is fired when the rectangle is being dragged or resized.
      * @param x The new x coordinate.
      * @param y The new y coordinate.
@@ -164,8 +175,11 @@ public class InteractiveRectangle extends Rectangle {
      * @param width The new width.
      */
     private void onDragOrResize(double x, double y, double height, double width) {
+        System.out.println(x + " " + y + " " + height + " " + width);
         setNodeSize(x, y, height, width);
+        textField.resizeRelocate(getParentX(getX()) + 5, getParentY(getY()) + 5, getWidth(), getHeight());
         updateAllCircles();
+        textField.toFront();
     }
 
     /**
@@ -534,5 +548,19 @@ public class InteractiveRectangle extends Rectangle {
      */
     private double getParentY(double localY) {
         return getNodeY() + localY;
+    }
+
+    private class CustomTextField extends TextField {
+
+        public CustomTextField() {
+            this.setEventHandler(MouseEvent.ANY, InteractiveRectangle.this::fireEvent);
+            this.setPrefSize(InteractiveRectangle.this.getWidth() - 5, InteractiveRectangle.this.getHeight() - 5);
+            this.setFont(Font.font("Verdana", FontWeight.NORMAL, 12));
+            this.setBackground(Background.fill(Constants.GREY));
+            this.setStyle("-fx-text-inner-color: white;");
+            this.setAlignment(Pos.CENTER);
+            pane.getChildren().add(this);
+            pane.setBackground(Background.fill(Constants.GREY));
+        }
     }
 }
