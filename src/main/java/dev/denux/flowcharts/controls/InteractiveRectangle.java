@@ -9,7 +9,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import javax.annotation.CheckReturnValue;
@@ -60,16 +59,6 @@ public class InteractiveRectangle extends Rectangle {
 
     /**
      * Create a new interactive rectangle!
-     * @param width The width of the rectangle.
-     * @param height The height of the rectangle.
-     * @param pane The {@link Pane} that contains the rectangle.
-     */
-    private InteractiveRectangle(double width, double height, @Nonnull Pane pane) {
-        this(0, 0, width, height, pane);
-    }
-
-    /**
-     * Create a new interactive rectangle!
      * @param x The x coordinate of the rectangle.
      * @param y The y coordinate of the rectangle.
      * @param width The width of the rectangle.
@@ -89,6 +78,7 @@ public class InteractiveRectangle extends Rectangle {
         showOrHideCircles(false);
         pane.getChildren().add(group);
         this.setVisible(true);
+        requestFocus();
     }
 
     /**
@@ -105,20 +95,10 @@ public class InteractiveRectangle extends Rectangle {
      * Updates all circles coordinates.
      */
     private void updateAllCircles() {
-        updateCircle(circleN, getCenterN());
-        updateCircle(circleE, getCenterE());
-        updateCircle(circleS, getCenterS());
-        updateCircle(circleW, getCenterW());
-    }
-
-    /**
-     * Updates the coordinates of the given circle.
-     * @param circle The {@link Circle} to update.
-     * @param point The {@link Point2D} that contains the new coordinates.
-     */
-    private void updateCircle(@Nonnull Circle circle, @Nonnull Point2D point) {
-        circle.setCenterX(point.getX());
-        circle.setCenterY(point.getY());
+        circleN.update(getCenterN());
+        circleE.update(getCenterE());
+        circleS.update(getCenterS());
+        circleW.update(getCenterW());
     }
 
     /**
@@ -140,20 +120,9 @@ public class InteractiveRectangle extends Rectangle {
     @CheckReturnValue
     @Nonnull
     private GlowingCircle addCircles(@Nonnull Point2D point) {
-        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 5, group);
+        GlowingCircle circle = new GlowingCircle(point.getX(), point.getY(), 5, pane);
         group.getChildren().add(circle);
         return circle;
-    }
-
-
-    /**
-     * Create a new interactive rectangle and adds it to the given {@link Pane}.
-     * @param width The width of the rectangle.
-     * @param height The height of the rectangle.
-     * @param pane The {@link Pane} that contains the rectangle.
-     */
-    public static void create(double width, double height, @Nonnull Pane pane) {
-        new InteractiveRectangle(width, height, pane);
     }
 
     /**

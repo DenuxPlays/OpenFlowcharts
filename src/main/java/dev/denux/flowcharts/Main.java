@@ -36,15 +36,15 @@ public class Main extends Application {
     @Override
     public void start(@Nonnull Stage primaryStage) {
         primaryStage.setTitle(Constants.APPLICATION_NAME + " - " + Constants.VERSION);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
 
         Pane drawerPane = new DrawerPane();
-        InteractiveRectangle.create(50, 50, drawerPane);
-
         Scene scene = new Scene(drawerPane);
         scene.setFill(Constants.GREY);
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
-        primaryStage.show();
         drawerPane.requestFocus();
+        primaryStage.show();
     }
 }

@@ -1,6 +1,7 @@
 package dev.denux.flowcharts.controls;
 
 import dev.denux.flowcharts.util.Constants;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
@@ -15,15 +16,37 @@ import javax.annotation.Nonnull;
 @Slf4j
 public class GlowingCircle extends Circle {
 
-	private final Group group;
+	private final Pane pane;
 
-	public GlowingCircle(double centerX, double centerY, double radius, Group group) {
+	private Arrow arrow = null;
+
+	public GlowingCircle(double centerX, double centerY, double radius, @Nonnull Pane pane) {
 		super(centerX, centerY, radius);
 		this.setEffect(new Glow(2D));
 		this.setFill(Constants.GREY);
 		this.setStroke(Color.GREENYELLOW);
-		this.group = group;
+		this.pane = pane;
 		addEventHandlers();
+		toFront();
+	}
+
+	/**
+	 * Updates the coordinates of the given circle.
+	 * @param point The {@link Point2D} that contains the new coordinates.
+	 */
+	public void update(@Nonnull Point2D point) {
+		this.setCenterX(point.getX());
+		this.setCenterY(point.getY());
+		updateArrowStart(point);
+		toFront();
+	}
+
+
+	public void updateArrowStart(@Nonnull Point2D point) {
+		if (arrow == null) return;
+		arrow.setStartX(point.getX());
+		arrow.setStartY(point.getY());
+		arrow.toBack();
 	}
 
 	private void addEventHandlers() {
@@ -34,18 +57,28 @@ public class GlowingCircle extends Circle {
 
 	private void onMouseEntered(@Nonnull MouseEvent event) {
 		this.requestFocus();
+		this.setVisible(true);
 		event.consume();
 	}
 
 	private void onMouseExited(@Nonnull MouseEvent event) {
 		this.setFocused(false);
+		this.setVisible(false);
 		event.consume();
 	}
 
 	private void onMouseDragged(@Nonnull MouseEvent event) {
-		log.info("Mouse dragged");
-		Arrow arrow = new Arrow(this.getCenterX(), this.getCenterY(), event.getX(), event.getY());
-		group.getChildren().add(arrow);
+		if (event.isPrimaryButtonDown()) {
+			if (arrow == null) {
+				arrow = new Arrow(this.getCenterX(), this.getCenterY(), event.getX(), event.getY());;
+				pane.getChildren().add(arrow);
+			} else {
+				arrow.setEndX(event.getX());
+				arrow.setEndY(event.getY());
+			}
+		}
+		arrow.toBack();
+		toFront();
 		event.consume();
 	}
 }
