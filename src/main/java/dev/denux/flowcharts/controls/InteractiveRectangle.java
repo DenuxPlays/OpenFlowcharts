@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
@@ -86,7 +85,7 @@ public class InteractiveRectangle extends Rectangle {
         pane.getChildren().add(group);
         this.setVisible(true);
         textField = new CustomTextField();
-        textField.resizeRelocate(getParentX(getX()) + 5, getParentY(getY()) + 5, getWidth() - 5, getHeight() - 5);
+        textField.relocateResize(getParentX(getX()), getParentY(getY()), getWidth(), getHeight());
         textField.toFront();
         setEventListeners();
         requestFocus();
@@ -108,7 +107,7 @@ public class InteractiveRectangle extends Rectangle {
      * Deletes the rectangle and all the elements that are connected to it.
      */
     public void delete() {
-        pane.getChildren().removeAll(this, group);
+        pane.getChildren().removeAll(this, textField, group);
         pane.requestFocus();
     }
 
@@ -117,7 +116,7 @@ public class InteractiveRectangle extends Rectangle {
      */
     private void setEventListeners() {
         this.setOnKeyPressed(this::keyPressed);
-        this.setOnMousePressed(this::mousePressed);
+        this.setOnMousePressed(event -> mousePressed(event, true));
         this.setOnMouseDragged(this::mouseDragged);
         this.setOnMouseMoved(this::mouseMoved);
         this.setOnMouseEntered(this::mouseEntered);
@@ -175,9 +174,8 @@ public class InteractiveRectangle extends Rectangle {
      * @param width The new width.
      */
     private void onDragOrResize(double x, double y, double height, double width) {
-        System.out.println(x + " " + y + " " + height + " " + width);
         setNodeSize(x, y, height, width);
-        textField.resizeRelocate(getParentX(getX()) + 5, getParentY(getY()) + 5, getWidth(), getHeight());
+        textField.relocateResize(getParentX(getX()), getParentY(getY()), getWidth(), getHeight());
         updateAllCircles();
         textField.toFront();
     }
@@ -302,8 +300,8 @@ public class InteractiveRectangle extends Rectangle {
      * A function that is being executed when the mouse is being pressed on the object.
      * @param event The {@link MouseEvent} instance.
      */
-    private void mousePressed(@Nonnull MouseEvent event) {
-        this.requestFocus();
+    private void mousePressed(@Nonnull MouseEvent event, boolean focused) {
+        this.setFocused(focused);
         if (isInResizeZone(event)) {
             setNewInitialEventCoordinates(event);
             state = currentSate(event);
@@ -553,14 +551,31 @@ public class InteractiveRectangle extends Rectangle {
     private class CustomTextField extends TextField {
 
         public CustomTextField() {
-            this.setEventHandler(MouseEvent.ANY, InteractiveRectangle.this::fireEvent);
-            this.setPrefSize(InteractiveRectangle.this.getWidth() - 5, InteractiveRectangle.this.getHeight() - 5);
+            setEventListeners();
+            relocateResize(x, y, width, height);
             this.setFont(Font.font("Verdana", FontWeight.NORMAL, 12));
             this.setBackground(Background.fill(Constants.GREY));
             this.setStyle("-fx-text-inner-color: white;");
             this.setAlignment(Pos.CENTER);
             pane.getChildren().add(this);
             pane.setBackground(Background.fill(Constants.GREY));
+        }
+
+        public void setEventListeners() {
+            this.setEventHandler(MouseEvent.ANY, InteractiveRectangle.this::fireEvent);
+            this.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown()) {
+                    this.setFocused(true);
+                    this.setEditable(true);
+                }
+                InteractiveRectangle.this.mousePressed(event, false);
+            });
+            this.setOnKeyPressed(InteractiveRectangle.this::keyPressed);
+        }
+
+        public void relocateResize(double x, double y, double width, double height) {
+            this.relocate(x + 3.5D, y + 3.5D);
+            this.setPrefSize(width - 7D, height - 7D);
         }
     }
 }
