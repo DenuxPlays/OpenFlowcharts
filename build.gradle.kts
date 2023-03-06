@@ -1,17 +1,19 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.panteleyev.jpackage.ImageType
 
 plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "8.1.0"
+    id("org.panteleyev.jpackageplugin") version "1.5.1"
 
     //Java fx
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.26.0"
 }
 
 group = "dev.denux"
-version = "1.0.0-alpha.1"
+version = "0.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_19
@@ -50,15 +52,50 @@ dependencies {
 application {
     mainModule.set("dev.denux.flowcharts")
     mainClass.set("dev.denux.flowcharts.LaunchHelper")
+    applicationName = "OpenFlowcharts"
 }
 
-jlink {
-    imageZip.set(project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip"))
-    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
-    launcher {
-        name = "app"
+tasks.jpackage {
+    dependsOn(shadowJar)
+
+    input = "$buildDir/libs"
+    destination = "$buildDir/dist"
+
+    appName = "OpenFlowcharts"
+    appVersion = project.version.toString()
+    vendor = "denux.dev"
+    appDescription = "OpenFlowcharts is a free and open source flowchart editor."
+    licenseFile = "LICENSE"
+
+    mainJar = tasks.shadowJar.get().archiveFileName.get()
+    mainClass = "dev.denux.flowcharts.LaunchHelper"
+
+    javaOptions = listOf("-Dfile.encoding=UTF-8")
+
+    linux {
+        type = ImageType.DEFAULT
+        linuxShortcut = true
+    }
+
+    windows {
+        type = ImageType.MSI
+        winDirChooser = true
+        winMenu = true
+        winMenuGroup = "OpenFlowcharts"
+        winShortcut = true
+        winShortcutPrompt = true
+        winPerUserInstall = true
+    }
+
+    mac {
+        type = ImageType.DMG
     }
 }
+
+val shadowJar: ShadowJar by tasks
+val jar : Jar by tasks
+
+shadowJar.archiveClassifier.set("withDependencies")
 
 val sourcesForRelease = task<Copy>("sourcesForRelease") {
     from("src/main/java") {

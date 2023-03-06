@@ -26,7 +26,6 @@ public class DrawerPane extends Pane {
 	 * Creates a new instance of {@link DrawerPane}.
 	 */
 	public DrawerPane() {
-		super();
 		setListeners();
 		this.setManaged(false);
 	}
