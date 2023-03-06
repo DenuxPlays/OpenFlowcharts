@@ -11,14 +11,30 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nonnull;
 
-//TODO java docs
+/**
+ * A {@link Circle} that glows when the mouse is over it.
+ * Also, you can draw an {@link Arrow} from this circle.
+ */
 @Slf4j
 public class GlowingCircle extends Circle {
 
+	/**
+	 * The {@link Group} that contains this {@link GlowingCircle}.
+	 */
 	private final Group group;
 
+	/**
+	 * The {@link Arrow} that is drawn from this {@link GlowingCircle}.
+	 */
 	protected Arrow arrow = null;
 
+	/**
+	 * Creates a new {@link GlowingCircle} with the given parameters.
+	 * @param centerX The x coordinate of the center of the circle.
+	 * @param centerY The y coordinate of the center of the circle.
+	 * @param radius The radius of the circle.
+	 * @param group The {@link Group} that contains this {@link GlowingCircle}.
+	 */
 	public GlowingCircle(double centerX, double centerY, double radius, @Nonnull Group group) {
 		super(centerX, centerY, radius);
 		this.setEffect(new Glow(2D));
@@ -30,6 +46,9 @@ public class GlowingCircle extends Circle {
 		toFront();
 	}
 
+	/**
+	 * Sets the neccessary event listeners for this {@link GlowingCircle}.
+	 */
 	private void setEventListeners() {
 		this.setOnMouseDragged(this::onMouseDragged);
 		this.setOnMouseEntered(this::onMouseEntered);
@@ -47,7 +66,10 @@ public class GlowingCircle extends Circle {
 		toFront();
 	}
 
-
+	/**
+	 * Updates the start coordinates of the {@link Arrow} that is drawn from this {@link GlowingCircle}.
+	 * @param point The {@link Point2D} that contains the new coordinates.
+	 */
 	public void updateArrowStart(@Nonnull Point2D point) {
 		if (arrow == null) return;
 		arrow.setStartX(point.getX());
@@ -56,6 +78,10 @@ public class GlowingCircle extends Circle {
 		arrow.toBack();
 	}
 
+	/**
+	 * The {@link MouseEvent} that will be executed if the mouse enters this {@link GlowingCircle}.
+	 * @param event The {@link MouseEvent} instance.
+	 */
 	private void onMouseEntered(@Nonnull MouseEvent event) {
 		this.requestFocus();
 		this.setVisible(true);
@@ -63,6 +89,10 @@ public class GlowingCircle extends Circle {
 		event.consume();
 	}
 
+	/**
+	 * The {@link MouseEvent} that will be executed if the mouse exits this {@link GlowingCircle}.
+	 * @param event The {@link MouseEvent} instance.
+	 */
 	private void onMouseExited(@Nonnull MouseEvent event) {
 		this.setFocused(false);
 		this.setVisible(false);
@@ -70,6 +100,10 @@ public class GlowingCircle extends Circle {
 		event.consume();
 	}
 
+	/**
+	 * The {@link MouseEvent} that will be executed if the mouse is dragged over this {@link GlowingCircle}.
+	 * @param event The {@link MouseEvent} instance.
+	 */
 	private void onMouseDragged(@Nonnull MouseEvent event) {
 		if (event.isPrimaryButtonDown()) {
 			if (arrow == null) {

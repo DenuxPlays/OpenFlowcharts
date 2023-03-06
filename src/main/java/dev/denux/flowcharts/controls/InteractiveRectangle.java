@@ -548,8 +548,14 @@ public class InteractiveRectangle extends Rectangle {
         return getNodeY() + localY;
     }
 
+    /**
+     * A custom implementation of {@link TextField} that is used inside the {@link InteractiveRectangle}.
+     */
     private class CustomTextField extends TextField {
 
+        /**
+         * Creates a new instance with all the necessary things to make it work.
+         */
         public CustomTextField() {
             setEventListeners();
             relocateResize(x, y, width, height);
@@ -561,7 +567,10 @@ public class InteractiveRectangle extends Rectangle {
             pane.setBackground(Background.fill(Constants.GREY));
         }
 
-        public void setEventListeners() {
+        /**
+         * Sets all the necessary event listeners.
+         */
+        private void setEventListeners() {
             this.setEventHandler(MouseEvent.ANY, InteractiveRectangle.this::fireEvent);
             this.setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown()) {
@@ -573,6 +582,13 @@ public class InteractiveRectangle extends Rectangle {
             this.setOnKeyPressed(InteractiveRectangle.this::keyPressed);
         }
 
+        /**
+         * Relocates and resizes the {@link CustomTextField}.
+         * @param x The x-coordinate.
+         * @param y The y-coordinate.
+         * @param width The width.
+         * @param height The height.
+         */
         public void relocateResize(double x, double y, double width, double height) {
             this.relocate(x + 3.5D, y + 3.5D);
             this.setPrefSize(width - 7D, height - 7D);
