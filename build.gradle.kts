@@ -37,7 +37,7 @@ dependencies {
 
     //Logging
     implementation("org.slf4j:slf4j-api:2.0.6")
-    implementation("ch.qos.logback:logback-classic:1.4.5")
+    implementation("ch.qos.logback:logback-classic:1.4.6")
 
     //Code safety
     implementation("com.google.code.findbugs:jsr305:3.0.2")
