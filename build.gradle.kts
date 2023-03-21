@@ -5,7 +5,7 @@ import org.panteleyev.jpackage.ImageType
 plugins {
     java
     application
-    id("com.github.johnrengelman.shadow") version "8.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.panteleyev.jpackageplugin") version "1.5.1"
 
     //Java fx
