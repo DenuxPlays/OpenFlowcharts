@@ -9,7 +9,7 @@ plugins {
     id("org.panteleyev.jpackageplugin") version "1.5.2"
 
     //Java fx
-    id("org.openjfx.javafxplugin") version "0.0.13"
+    id("org.openjfx.javafxplugin") version "0.0.14"
 }
 
 group = "dev.denux"
