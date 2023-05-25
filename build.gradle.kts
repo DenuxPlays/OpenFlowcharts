@@ -29,7 +29,7 @@ repositories {
     mavenCentral()
 }
 
-val lombokVersion = "1.18.26"
+val lombokVersion = "1.18.28"
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
