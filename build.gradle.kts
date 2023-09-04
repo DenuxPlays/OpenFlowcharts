@@ -36,7 +36,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 
     //Logging
-    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
 
     //Code safety
