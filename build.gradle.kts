@@ -6,7 +6,7 @@ plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.panteleyev.jpackageplugin") version "1.5.2"
+    id("org.panteleyev.jpackageplugin") version "1.6.0"
 
     //Java fx
     id("org.openjfx.javafxplugin") version "0.1.0"
